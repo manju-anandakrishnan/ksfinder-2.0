@@ -1,0 +1,70 @@
+import pandas as pd
+import random
+
+from classifier.predict.by_kinase_substrate import make_predictions
+from util.metrics import Curve, Score
+from util import constants
+from util import data_util
+
+random.seed(13)
+
+if __name__ == '__main__':
+    test_df = pd.read_csv(constants.CSV_CLF_TEST_D2,sep='|')
+    test_df['motif'] = test_df['tail'].apply(lambda x:x[x.find('_')+1:])
+    test_df['substrate'] = test_df['tail'].apply(lambda x:x[:x.find('_')])
+    test_df['kinase'] = test_df['head'].copy()
+    test_pos_data = test_df[test_df['label']==1].copy()
+    neg_data = test_df[test_df['label']==0].copy()
+    test_pos_data['ks'] = test_pos_data.apply(lambda x:(x['kinase'],x['substrate']),axis=1)
+    pos_ks = test_pos_data['ks'].to_list()
+    neg_data['ks'] = neg_data.apply(lambda x:(x['kinase'],x['substrate']),axis=1)
+
+    train_df = pd.read_csv(constants.CSV_CLF_TRAIN_DATA,sep='|')
+    train_df['motif'] = train_df['tail'].apply(lambda x:x[x.find('_')+1:])
+    train_df['substrate'] = train_df['tail'].apply(lambda x:x[:x.find('_')])
+    train_df['kinase'] = train_df['head'].copy()
+    train_pos_data = train_df[train_df['label']==1].copy()
+    train_pos_data['ks'] = train_pos_data.apply(lambda x:(x['kinase'],x['substrate']),axis=1)
+    pos_ks.extend(train_pos_data['ks'].to_list())
+    test_neg_data = neg_data[~neg_data['ks'].isin(pos_ks)].copy()
+
+    print(test_pos_data.shape, test_neg_data.shape)
+
+    test_df = pd.concat([test_pos_data,test_neg_data])
+
+    predkinkg_pred_df = pd.read_csv(constants.CSV_PREDKINKG_PREDICTIONS,sep=',')
+    predkinkg_pred_df = predkinkg_pred_df[['kinase','substrate','proba']]
+
+    test_df = test_df[['head','tail','label','substrate']]
+    test_df.dropna(how='any',axis=0,inplace=True)
+    test_df.drop_duplicates(inplace=True)
+
+    test_df = test_df.merge(predkinkg_pred_df,how='left',left_on=['head','substrate'],right_on=['kinase','substrate'])
+    test_df = test_df[['head','tail','label','proba']].copy()
+    test_df.dropna(axis=0,how='any',inplace=True)    
+    test_df.drop_duplicates(inplace=True)
+
+    test_df = data_util.normalize_data_cnt(test_df)
+    print(test_df['label'].value_counts().to_dict())
+
+    ksf2_pred = make_predictions(test_df)
+    test_df['ksf_pred'] = ksf2_pred    
+    y_true = test_df['label'].to_list()
+    predkinkg_pred = test_df['proba'].to_list()
+
+    roc_curve = Curve.get_roc_curves([y_true, y_true],
+                                        [predkinkg_pred,ksf2_pred],
+                                        ['blue','magenta'],)
+    pr_curve = Curve.get_pr_curves([y_true, y_true],[predkinkg_pred,ksf2_pred],
+                                    ['blue','magenta'],)
+        
+    roc_score, _,_,_ = Score.get_roc_score(y_true,ksf2_pred)
+    pr_score, _,_,_ = Score.get_pr_score(y_true,ksf2_pred)
+    print(f'KSFinder 2.0:: ROC-AUC: {roc_score} | PR-AUC: {pr_score}')
+        
+    roc_score, _,_,_ = Score.get_roc_score(y_true,predkinkg_pred)
+    pr_score, _,_,_ = Score.get_pr_score(y_true,predkinkg_pred)
+    print(f'PredKinKG:: ROC-AUC: {roc_score} | PR-AUC: {pr_score}')
+
+    roc_curve.savefig(constants.KSF2_PREDKINKG_ROC_CURVES)
+    pr_curve.savefig(constants.KSF2_PREDKINKG_PR_CURVES)

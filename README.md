@@ -4,7 +4,14 @@ cd ksfinder-2.0 <br>
 
 # Create environment and load libraries
 conda env create -f environment.yaml <br>
-conda activate ksf2_env <br>
+conda activate ksf2 <br>
+
+python setup.py install <br>
+
+If you have GPU compatability error message, "UserWarning: CUDA initialization: The NVIDIA driver on your system is too old (found version 11060). Please update your GPU driver by downloading and installing a new version from the URL: http://www.nvidia.com/Download/index.aspx Alternatively, go to: https://pytorch.org to install a PyTorch version that has been compiled with your version of the CUDA driver." <br>
+
+Install the below pytorch cudatoolkit package <br>
+conda install pytorch=1.10.2 cudatoolkit=11.3 torchvision torchaudio -c pytorch <br>
 
 # Initialize the repository
 sh init.sh <br>

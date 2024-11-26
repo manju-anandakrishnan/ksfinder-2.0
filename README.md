@@ -3,9 +3,8 @@ git clone git@github.com:manju-anandakrishnan/ksfinder-2.0.git
 cd ksfinder-2.0
 
 # Create environment and load libraries
-conda create --name ksf2_env python=3.9 <br>
+conda env create -f environment.yaml <br>
 conda activate ksf2_env <br>
-conda install --file requirements.txt <br>
 
 # Initialize the repository
 sh init.sh

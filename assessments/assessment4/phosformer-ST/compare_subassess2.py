@@ -1,7 +1,7 @@
 import pandas as pd
 import random
 
-from classifier.predict.by_kinase_substrate import make_predictions
+from classifier.predict.generator import predict
 from util.metrics import Curve, Score
 from util import constants
 from util import data_util
@@ -71,7 +71,7 @@ if __name__ == '__main__':
     test_df.dropna(axis=0,how='any',inplace=True)
     test_df.reset_index(drop=True,inplace=True)
     
-    ksf_pred = make_predictions(test_df)
+    ksf_pred = predict(test_df)
     test_df['ksf_pred'] = ksf_pred
     test_df.dropna(axis=0,how='any',inplace=True)
 

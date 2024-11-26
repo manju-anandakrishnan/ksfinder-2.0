@@ -1,7 +1,7 @@
 import pandas as pd
 import random
 
-from classifier.predict.by_kinase_substrate import make_predictions
+from classifier.predict.generator import predict
 from util.metrics import Curve, Score
 from util import constants
 from util import data_util
@@ -47,7 +47,7 @@ if __name__ == '__main__':
     test_df = data_util.normalize_data_cnt(test_df)
     print(test_df['label'].value_counts().to_dict())
 
-    ksf2_pred = make_predictions(test_df)
+    ksf2_pred = predict(test_df)
     test_df['ksf_pred'] = ksf2_pred    
     y_true = test_df['label'].to_list()
     predkinkg_pred = test_df['proba'].to_list()

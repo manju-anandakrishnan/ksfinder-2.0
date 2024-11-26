@@ -19,11 +19,11 @@ We generated predictions by matching kinases and substrate, motifs in our datase
 # To get KSFinder 2.0 predictions for your data, pass the arguments --k, --sp, --sm as required. 
 --sp denotes the substrate protein, --sm denotes the phosphomotif (-/+ 4 mer),  --k denotes the kinase
 KSFinder 2.0 can make predictions only for those entities that are in its KG.
-# For a given substrate, motif
+For input substrate and motif
     python classifier/predict/handler.py --sp Q14974 --sm RRSKTNKAK
-# For a given substrate
+For an input substrate
     python classifier/predict/handler.py --sp Q14974
-# For a given kinase
+For an input kinase
     python classifier/predict/handler.py --k Q96GD4
 
 # To train KGE models from scratch

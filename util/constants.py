@@ -77,6 +77,7 @@ CSV_PROSTT5_EMB = os.path.join(DIR_EMBEDDINGS,'prostT5_emb.csv')
 CSV_RANDOM_EMB = os.path.join(DIR_EMBEDDINGS,'random_emb.csv')
 
 CSV_SUBSTRATES_MOTIF = os.path.join(DIR_DATA,'substrates_motif.csv')
+CSV_KG_KINASES = os.path.join(DIR_DATA,'kinases.csv')
 
 CSV_PHOSFORMER_PREDICTIONS = os.path.join(DIR_ASSESSMENT4,'phosformer-ST','phosformer_predictions.csv')
 PHOS_ST_KINASES = os.path.join(DIR_ASSESSMENT4,'phosformer-ST','sup_file_x3_kinases.txt')
@@ -108,4 +109,7 @@ RESULT_DIR_TRANSE = os.path.join(DIR_KGE,'transE')
 RESULT_DIR_DISTMULT = os.path.join(DIR_KGE,'distmult')
 RESULT_DIR_COMPLEX = os.path.join(DIR_KGE,'complex')
 RESULT_DIR_EXPRESSIVE = os.path.join(DIR_KGE,'expressivE')
+
+DIR_KSF2_PREDICTIONS = 'output'
+DIR_KSF2_PREDICTIONS_BATCH = 'output/batch'
 

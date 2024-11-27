@@ -1,9 +1,10 @@
-# Steps to set up KSFinder 2.0 -- begins ---
-1. Clone the repository <br>
+# Steps to set up KSFinder 2.0
+<b>Steps to set up KSFinder 2.0 --- begins ---</b>
+<u>1. Clone the repository <br> </u>
 git clone git@github.com:manju-anandakrishnan/ksfinder-2.0.git <br>
 cd ksfinder-2.0 <br>
 
-2. Create environment and load libraries
+<u>2. Create environment and load libraries </u>
 conda env create -f environment.yaml <br>
 conda activate ksf2 <br>
 
@@ -14,11 +15,11 @@ If you have GPU compatability error message, "UserWarning: CUDA initialization: 
 Install the below pytorch cudatoolkit package <br>
 conda install pytorch=1.10.2 cudatoolkit=11.3 torchvision torchaudio -c pytorch <br>
 
-3. Initialize the repository
+<u>3. Initialize the repository </u>
 sh init.sh <br>
 Dataset and trained models are available in Zenodo repository, https://doi.org/10.5281/zenodo.14075070. Upon initialization, the models and dataset should be downloaded into appropriate folders in ksfinder-2.0 repository.
 
-# Steps to set up KSFinder 2.0 -- ends ---
+Steps to set up KSFinder 2.0 --- ends ---
 
 # To run assessments (1 thorugh 4)
 sh assess.sh <br>
@@ -29,15 +30,15 @@ We generated predictions by matching kinases and substrate, motifs in our datase
 # To get KSFinder 2.0 predictions for your data, pass the arguments --k, --sp, --sm as required. 
 --sp denotes the substrate protein, --sm denotes the phosphomotif (-/+ 4 mer),  --k denotes the kinase <br>
 KSFinder 2.0 can make predictions only for those entities that are in its KG. <br>
-For input substrate and motif <br>
-    python classifier/predict/handler.py --sp Q14974 --sm RRSKTNKAK <br>
-For an input substrate <br>
-    python classifier/predict/handler.py --sp Q14974 <br>
-For an input kinase <br>
-    python classifier/predict/handler.py --k Q96GD4 <br>
+For input given substrate protein and motif at the phosphosite, <br>
+python classifier/predict/handler.py --sp Q14974 --sm RRSKTNKAK <br>
+For an input substrate protein and all motifs of the protein's phosphosites, <br>
+python classifier/predict/handler.py --sp Q14974 <br>
+For an input kinase, <br>
+python classifier/predict/handler.py --k Q96GD4 <br>
 
 # To train KGE models from scratch
-    python kge/kge_model.py <br>
+python kge/kge_model.py <br>
 
 # To retrain classifier models from scratch
 In assess.sh, include the argument --retrain=T with the python commands <br>
@@ -52,9 +53,9 @@ To evaluate at the kinase-substrate level without motif information, use the hig
 
 # To access datasets used for KSFinder 2.0's training and testing
 1. Follow the steps listed under 'Steps to set up KSFinder 2.0'. <br>
-    Training data is available under '/data/classifier'
-    Testing dataset1 is available under '/data/classifier/td1_ratio_1.1'
-    Testing dataset2 is available under '/data/classifier/td2_tr_dist'
+    Training data is available under '/data/classifier' <br>
+    Testing dataset1 is available under '/data/classifier/td1_ratio_1.1' <br>
+    Testing dataset2 is available under '/data/classifier/td2_tr_dist' <br>
 
 
 

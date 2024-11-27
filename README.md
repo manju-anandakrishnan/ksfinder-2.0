@@ -1,10 +1,10 @@
-# Steps to set up KSFinder 2.0
-<b>Steps to set up KSFinder 2.0 --- begins ---</b>
-<u>1. Clone the repository <br> </u>
+# Steps to set up KSFinder 2.0 <br>
+*Steps to set up KSFinder 2.0 --- begins ---*
+1. Clone the repository <br>
 git clone git@github.com:manju-anandakrishnan/ksfinder-2.0.git <br>
 cd ksfinder-2.0 <br>
 
-<u>2. Create environment and load libraries </u>
+2. Create environment and load libraries
 conda env create -f environment.yaml <br>
 conda activate ksf2 <br>
 
@@ -15,11 +15,11 @@ If you have GPU compatability error message, "UserWarning: CUDA initialization: 
 Install the below pytorch cudatoolkit package <br>
 conda install pytorch=1.10.2 cudatoolkit=11.3 torchvision torchaudio -c pytorch <br>
 
-<u>3. Initialize the repository </u>
+3. Initialize the repository
 sh init.sh <br>
 Dataset and trained models are available in Zenodo repository, https://doi.org/10.5281/zenodo.14075070. Upon initialization, the models and dataset should be downloaded into appropriate folders in ksfinder-2.0 repository.
 
-Steps to set up KSFinder 2.0 --- ends ---
+*Steps to set up KSFinder 2.0 --- ends ---*
 
 # To run assessments (1 thorugh 4)
 sh assess.sh <br>
@@ -56,6 +56,8 @@ To evaluate at the kinase-substrate level without motif information, use the hig
     Training data is available under '/data/classifier' <br>
     Testing dataset1 is available under '/data/classifier/td1_ratio_1.1' <br>
     Testing dataset2 is available under '/data/classifier/td2_tr_dist' <br>
+    (or) <br>
+2. Download directly from Zenodo repository, https://zenodo.org/records/14075070/files/classifier_datasets.zip
 
 
 

@@ -25,7 +25,7 @@ Dataset and trained models are available in Zenodo repository, https://doi.org/1
 sh assess.sh <br>
 
 # KSFinder 2.0 predictions
-We generated predictions by matching kinases and substrate, motifs in our dataset using KSFinder 2.0 model and the predictions are available in the output/batch folder. Or in the Zenodo repository, ksf2_predictions.zip
+We generated predictions for all combinations of kianses and substrate_motifs using KSFinder 2.0 and the predictions are available in the Zenodo repository, ksf2_predictions.zip. If you have run init.sh and set up local workspace as described earlier, then predictions are also available under output/batch folder. 
 
 # To get KSFinder 2.0 predictions for your data, pass the arguments --k, --sp, --sm as required. 
 --sp denotes the substrate protein, --sm denotes the phosphomotif (-/+ 4 mer),  --k denotes the kinase <br>

@@ -44,7 +44,7 @@ python kge/kge_model.py <br>
 In assess.sh, include the argument --retrain=T with the python commands <br>
 Example, python assessments/assessment2/nn_classifier_ksf2.py --retrain=T   <br>
 
-# To compare KSFinder 2.0 with other models
+# To compare KSFinder 2.0 with other models using your own dataset
 Follow the steps listed under 'Steps to set up KSFinder 2.0'. <br>
 1. Either use the prediction data under output folder (or) <br>
 2. Generate predictions using python classifier/predict/handler.py (by passing the arguments as described in the earlier steps) <br>

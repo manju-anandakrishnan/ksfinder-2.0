@@ -29,6 +29,8 @@ if __name__ == '__main__':
     test_df = test_df[['head','tail','label','Score']].copy()
     test_df.drop_duplicates(inplace=True)
     
+    neg_test_df = test_df[test_df['label']==0].copy()
+    
     test_df = data_util.normalize_data_cnt(test_df)    
     print(test_df['label'].value_counts().to_dict())
 
@@ -43,9 +45,9 @@ if __name__ == '__main__':
 
     roc_curve = Curve.get_roc_curves([y_true, y_true],
                                      [linkphinder_pred,ksf_pred],
-                                     ['magenta','blue'],)
+                                     ['blue','magenta'],)
     pr_curve = Curve.get_pr_curves([y_true, y_true],[linkphinder_pred,ksf_pred],
-                                   ['magenta','blue'],)
+                                   ['blue','magenta'],)
     
     roc_score, _,_,_ = Score.get_roc_score(y_true,ksf_pred)
     pr_score, _,_,_ = Score.get_pr_score(y_true,ksf_pred)

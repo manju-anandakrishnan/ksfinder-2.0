@@ -11,8 +11,8 @@ conda activate ksf2 <br>
 Execute the following two commands, <br>
 python setup.py install <br>
 
-Install pytorch package compatabile with your cuda-toolkit version. This project was developed using CUDA version: 11.6 which is compatible with the package, "pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.3 -c pytorch" <br>
-To install this version, use, conda install pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.3 -c pytorch <br>
+Install pytorch package compatabile with your cuda-toolkit version. This project was developed using CUDA version:11.6, which is compatible with the package, "pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.3 -c pytorch" <br>
+To install this version, execute, conda install pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.3 -c pytorch <br>
 
 4. Initialize the repository <br>
 sh init.sh <br>

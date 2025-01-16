@@ -4,6 +4,18 @@ from sklearn.metrics import roc_auc_score, average_precision_score
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+"""
+Evaluates the model with the input testing_data
+
+Parameters
+------------
+testing_data: pd.DataFrame
+
+Returns
+------------
+ROC_SCORE and PR_SCORE based on input testing_data predictions
+
+"""
 def evaluate_model(model,testing_data):   
     k_emb_test = torch.tensor(testing_data[0],dtype=torch.float32).to(device)
     s_emb_test = torch.tensor(testing_data[1],dtype=torch.float32).to(device)

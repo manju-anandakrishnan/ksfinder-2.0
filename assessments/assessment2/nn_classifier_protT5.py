@@ -19,7 +19,14 @@ torch.manual_seed(13)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 class KSFinder2:
-
+    '''
+    Class for training KSFinder2 using ProtT5 embeddings
+    
+    Parameters
+    ----------
+    training_data:tuple of numpy arrays (kinase,substrate,motif,label)
+    
+    '''
     def __init__(self,training_data):
         
         k_emb_train = training_data[0]
@@ -157,9 +164,10 @@ if __name__ == '__main__':
     parser.add_argument('--retrain', type=bool,default=False)
     args = parser.parse_args()
 
-    embedding_csv, model_path = constants.CSV_PROTT5_EMB, constants.MODEL_PROTT5
+    model_path = constants.MODEL_PROTT5
 
     data_loader = ProtT5DataLoader()
+    # Loads ProtT5 Embeddings
     ksm_embeddings = ProtT5Embeddings()
 
     if args.retrain:        

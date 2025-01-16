@@ -3,6 +3,15 @@ setup.py
 assessments/__init__.py
 classifier/__init__.py
 classifier/data_split.py
+classifier/ksf2/__init__.py
+classifier/ksf2/custom_nn.py
+classifier/ksf2/embeddings.py
+classifier/ksf2/evaluation.py
+classifier/ksf2/nn_classifier.py
+classifier/predict/__init__.py
+classifier/predict/batch.py
+classifier/predict/generator.py
+classifier/predict/handler.py
 kge/__init__.py
 kge/convert_embedding_format.py
 kge/custom_models.py

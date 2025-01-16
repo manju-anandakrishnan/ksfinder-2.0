@@ -28,8 +28,6 @@ if __name__ == '__main__':
     pos_ks.extend(train_pos_data['ks'].to_list())
     test_neg_data = neg_data[~neg_data['ks'].isin(pos_ks)].copy()
 
-    print(test_pos_data.shape, test_neg_data.shape)
-
     test_df = pd.concat([test_pos_data,test_neg_data])
 
     ksf1_pred_df = pd.read_csv(constants.CSV_KSFINDER_PREDICTIONS,sep=',')

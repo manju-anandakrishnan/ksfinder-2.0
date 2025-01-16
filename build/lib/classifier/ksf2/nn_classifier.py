@@ -13,21 +13,14 @@ from custom_nn import BilinearDNNModel
 from embeddings import DataLoader, KSMEmbeddings
 from evaluation import evaluate_model
 
-from util import constants
+from util import constants, data_util
+from util.metrics import Curve
+
 torch.manual_seed(13)
 
 device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
 
 class KSFinder2:
-
-    '''
-    Class for training KSFinder2 using DistMult Embeddings
-    
-    Parameters
-    ----------
-    training_data:tuple of numpy arrays (kinase,substrate,motif)
-    
-    '''
 
     def __init__(self,training_data):
         
@@ -41,13 +34,6 @@ class KSFinder2:
         self.m_emb_train = torch.tensor(m_emb_train,dtype=torch.float32)
         self.y_train = torch.tensor(y_train,dtype=torch.float32).view(-1,1)
 
-    """
-    Model training
-    
-    Returns
-    ----------
-    Best model after k-fold cross-validation    
-    """
     def train_model(self):
 
         input_size = self.k_emb_train.shape[1]  
@@ -56,12 +42,12 @@ class KSFinder2:
 
         num_folds = 5
         skf = StratifiedKFold(n_splits=num_folds, shuffle=True, random_state=13)
-
+        
         # Initialize a list to store the ROC AUC scores for each fold
         results = []
 
         param_combinations = [     
-            {'hidden_sizes': [40,50], 'learning_rate':0.01},   
+            {'hidden_sizes': [40,50], 'learning_rate':0.01},                
         ]
 
         for param_comb in param_combinations:
@@ -77,7 +63,6 @@ class KSFinder2:
                 try:
                     # Create the model
                     model = BilinearDNNModel(input_size, input_size, input_size, param_comb.get('hidden_sizes'), output_size)
-                    model = nn.DataParallel(model,device_ids=[1])
                     model = model.to(device)
                     
                     # Define loss function and optimizer
@@ -97,6 +82,7 @@ class KSFinder2:
                     X_fold_test_kemb = X_fold_test_kemb.to(device)
                     X_fold_test_semb = X_fold_test_semb.to(device)
                     X_fold_test_memb = X_fold_test_memb.to(device)
+
                     # Training loop
                     for epoch in range(num_epochs):
                         # Forward pass
@@ -117,31 +103,30 @@ class KSFinder2:
                             epoch_val_loss = round(epoch_val_loss.item(),4)
                             # Convert outputs to numpy array and flatten if necessary
                             y_pred = val_outputs.numpy().flatten() if isinstance(val_outputs, torch.Tensor) else val_outputs.flatten()
-
+                            
                             # Compute scores for this fold
                             roc_score = round(roc_auc_score(y_fold_test, y_pred),6)
                             pr_score = round(average_precision_score(y_fold_test, y_pred),6)
                         
                         # Check for early stopping
-                        if pr_score > best_score:
-                            best_score = pr_score
-                            model_fold_scores[fold]=best_score
-                            model_fold_epochs[fold]=epoch
-                            patience_count = 0
-                        else:
-                            patience_count += 1
-                            if patience_count == 3:
-                                model_fold_epochs[fold]=epoch-3
-                                print(f"\tEarly stopping triggered at {epoch} epoch. ROC-AUC:{roc_score};PR-AUC:{pr_score}")
-                                break  
+                        if (epoch+1)%5 == 0:
+                            if pr_score > best_score:
+                                best_score = pr_score
+                                model_fold_scores[fold]=best_score
+                                model_fold_epochs[fold]=epoch
+                                patience_count = 0
+                            else:
+                                patience_count += 1
+                                if patience_count == 3:
+                                    model_fold_epochs[fold]=epoch-3*5
+                                    print(f"\tEarly stopping triggered at {epoch} epoch. ROC-AUC:{roc_score};PR-AUC:{pr_score}")
+                                    break  
                 except ValueError as ve:
-                    print(ve.with_traceback())
-                
-            max_score = np.median(model_fold_scores)
+                    print(ve.with_traceback())                
+            max_score = np.max(model_fold_scores)
             param_comb['epoch'] = model_fold_epochs[model_fold_scores.index(max_score)]
-            results.append({'params': param_comb, 'max_score':max_score})
-
-        print(results)
+            results.append({'Fold':fold, 'params': param_comb, 'max_score':max_score})        
+            
         best_model = max(results, key=lambda x: x['max_score'])
         best_model_params = best_model.get('params')
         return self.train_best_model(best_model_params)
@@ -163,43 +148,53 @@ class KSFinder2:
             loss.backward()
             optimizer.step()
         return model
-    
+        
 if __name__ == '__main__':
 
-    # Loads values from input arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('--retrain',default=False,type=bool)
     args = parser.parse_args()
 
-    # Sets the path of input embedding and model
-    embedding_csv, model_path = constants.CSV_DISTMULT_EMB, constants.MODEL_DISTMULT
+    embedding_csv, model_path = constants.CSV_TRANSE_EMB, constants.MODEL_KSF2
 
-    # Instantiates classes for loading data and retrieving embeddings
     data_loader = DataLoader()
     ksm_embeddings = KSMEmbeddings(embedding_csv) 
 
-    # Retraining model from scratch
     if args.retrain:        
-        raw_training_data = data_loader.get_training_data(constants.CSV_CLF_TRAIN_DATA_ASSESS1)
+        raw_training_data = data_loader.get_training_data(constants.CSV_CLF_TRAIN_DATA)
         ksfinder = KSFinder2(ksm_embeddings.get_training_data(raw_training_data))
         best_model = ksfinder.train_model()
         scripted_model = torch.jit.script(best_model)
         scripted_model.save(model_path)
     
-    # Evaluates model with testing dataset 1
+    model = torch.jit.load(model_path)
+
     print('****Testing dataset 1 ****')
-    raw_testing_data = data_loader.get_testing_data(constants.CSV_CLF_TEST_D1_ASSESS1)
+    raw_testing_data = data_loader.get_testing_data(constants.CSV_CLF_TEST_D1)
     testing_data = ksm_embeddings.get_testing_data(raw_testing_data)
     model = torch.jit.load(model_path)
     
     roc_score, pr_score = evaluate_model(model,testing_data)
     print("ROC Score:", roc_score, "PR Score:",pr_score)
-    
-    # Evaluates model with testing dataset 2
+
     print('****Testing dataset 2 ****')
-    raw_testing_data = data_loader.get_testing_data(constants.CSV_CLF_TEST_D2_ASSESS1)
+    raw_testing_data = data_loader.get_testing_data(constants.CSV_CLF_TEST_D2)
     testing_data = ksm_embeddings.get_testing_data(raw_testing_data)
     model = torch.jit.load(model_path)
     
+    roc_score, pr_score = evaluate_model(model,testing_data)
+    print("ROC Score:", roc_score, "PR Score:",pr_score)
+
+    raw_testing_data = data_loader.get_testing_data(constants.CSV_CLF_TEST_DATA_DK)
+    # Equalize count of positive and negative labels
+    raw_testing_data = data_util.normalize_data_cnt(raw_testing_data)
+    testing_data = ksm_embeddings.get_testing_data(raw_testing_data)
+        
+    roc_score, pr_score = evaluate_model(model,testing_data)
+    print("ROC Score:", roc_score, "PR Score:",pr_score)
+
+    raw_testing_data = data_loader.get_testing_data(constants.CSV_CLF_TEST_DATA_DK)
+    testing_data = ksm_embeddings.get_testing_data(raw_testing_data)
+        
     roc_score, pr_score = evaluate_model(model,testing_data)
     print("ROC Score:", roc_score, "PR Score:",pr_score)

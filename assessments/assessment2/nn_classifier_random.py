@@ -19,7 +19,14 @@ torch.manual_seed(13)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 class KSFinder2:
-
+    '''
+    Class for training using random embeddings
+    
+    Parameters
+    ----------
+    training_data:tuple of numpy arrays (kinase,substrate,motif,label)
+    
+    '''
     def __init__(self,training_data):
         
         k_emb_train = training_data[0]
@@ -155,8 +162,10 @@ if __name__ == '__main__':
     parser.add_argument('--retrain', type=bool,default=False)
     args = parser.parse_args()
 
-    embedding_csv, model_path = constants.CSV_TRANSE_EMB, constants.MODEL_RANDOM
+    model_path = constants.MODEL_RANDOM
     data_loader = RandomDataLoader()
+
+    #Loads random embeddings
     ksm_embeddings = RandomEmbeddings()
 
     if args.retrain:        

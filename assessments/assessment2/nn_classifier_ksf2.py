@@ -19,6 +19,14 @@ torch.manual_seed(13)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 class KSFinder2:
+    '''
+    Class for training KSFinder2 using ksf2 embeddings
+    
+    Parameters
+    ----------
+    training_data:tuple of numpy arrays (kinase,substrate,motif,label)
+    
+    '''
 
     def __init__(self,training_data):
         
@@ -155,8 +163,10 @@ if __name__ == '__main__':
     parser.add_argument('--retrain', type=bool,default=False)
     args = parser.parse_args()
 
-    embedding_csv, model_path = constants.CSV_TRANSE_EMB, constants.MODEL_KSF2_ASSESS2
+    model_path = constants.MODEL_KSF2_ASSESS2
     data_loader = KSF2DataLoader()
+
+    # Loads KSF2 embeddings
     ksm_embeddings = KSF2Embeddings()
 
     if args.retrain:        

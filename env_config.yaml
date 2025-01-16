@@ -103,8 +103,6 @@ dependencies:
   - python=3.9.17=h955ad1f_0
   - python-dateutil=2.9.0post0=py39h06a4308_2
   - python-tzdata=2023.3=pyhd3eb1b0_0
-  - pytorch=1.10.2=py3.9_cuda11.3_cudnn8.2.0_0
-  - pytorch-mutex=1.0=cuda
   - pytz=2024.1=py39h06a4308_0
   - qt-main=5.15.2=hb6262e9_11
   - readline=8.2=h5eee18b_0
@@ -118,8 +116,6 @@ dependencies:
   - threadpoolctl=3.5.0=py39h2f386ee_0
   - tk=8.6.14=h39e8969_0
   - tomli=2.0.1=py39h06a4308_0
-  - torchaudio=0.10.2=py39_cu113
-  - torchvision=0.11.3=py39_cu113
   - tornado=6.4.1=py39h5eee18b_0
   - typing_extensions=4.11.0=py39h06a4308_0
   - tzdata=2024b=h04d1e81_0
@@ -175,9 +171,6 @@ dependencies:
     - sqlalchemy==2.0.36
     - sympy==1.13.1
     - tabulate==0.9.0
-    - torch==2.5.1
-    - torch-max-mem==0.1.3
-    - torch-ppr==0.0.8
     - tqdm==4.67.0
     - triton==3.1.0
     - typing-inspect==0.9.0

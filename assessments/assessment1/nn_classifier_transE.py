@@ -21,6 +21,14 @@ device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
 
 class KSFinder2:
 
+    '''
+    Class for training KSFinder2
+    
+    Parameters
+    ----------
+    training_data:tuple of numpy arrays (kinase,substrate,motif)
+    
+    '''
     def __init__(self,training_data):
         
         k_emb_train = training_data[0]
@@ -33,6 +41,13 @@ class KSFinder2:
         self.m_emb_train = torch.tensor(m_emb_train,dtype=torch.float32)
         self.y_train = torch.tensor(y_train,dtype=torch.float32).view(-1,1)
 
+     """
+    Model training
+    
+    Returns
+    ----------
+    Best model after k-fold cross-validation    
+    """
     def train_model(self):
 
         input_size = self.k_emb_train.shape[1]  
@@ -150,15 +165,19 @@ class KSFinder2:
         
 if __name__ == '__main__':
 
+    # Loads values from input arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('--retrain',default=False,type=bool)
     args = parser.parse_args()
 
+    # Sets the path of input embedding and model
     embedding_csv, model_path = constants.CSV_TRANSE_EMB, constants.MODEL_TRANSE
 
+    # Instantiates classes for loading data and retrieving embeddings
     data_loader = DataLoader()
     ksm_embeddings = KSMEmbeddings(embedding_csv) 
 
+    # Retraining model from scratch
     if args.retrain:        
         raw_training_data = data_loader.get_training_data(constants.CSV_CLF_TRAIN_DATA_ASSESS1)
         ksfinder = KSFinder2(ksm_embeddings.get_training_data(raw_training_data))
@@ -166,6 +185,7 @@ if __name__ == '__main__':
         scripted_model = torch.jit.script(best_model)
         scripted_model.save(model_path)
     
+    # Evaluates model with testing dataset 1
     print('****Testing dataset 1 ****')
     raw_testing_data = data_loader.get_testing_data(constants.CSV_CLF_TEST_D1_ASSESS1)
     testing_data = ksm_embeddings.get_testing_data(raw_testing_data)
@@ -174,6 +194,7 @@ if __name__ == '__main__':
     roc_score, pr_score = evaluate_model(model,testing_data)
     print("ROC Score:", roc_score, "PR Score:",pr_score)
     
+    # Evaluates model with testing dataset 2
     print('****Testing dataset 2 ****')
     raw_testing_data = data_loader.get_testing_data(constants.CSV_CLF_TEST_D2_ASSESS1)
     testing_data = ksm_embeddings.get_testing_data(raw_testing_data)

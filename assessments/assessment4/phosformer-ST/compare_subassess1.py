@@ -51,12 +51,9 @@ if __name__ == '__main__':
     test_df = test_df[['head','tail','label','motif','substrate','motif_15mer','phosST_pred']].copy()
 
     na_df = test_df[test_df.isnull().any(axis=1)].copy()
-    print(na_df.head())
     
     test_df.drop_duplicates(inplace=True)
-    print(test_df['label'].value_counts())
     test_df.dropna(axis=0,how='any',inplace=True)
-    print(test_df['label'].value_counts())
 
     test_df['km'] = test_df.apply(lambda x:(x['head'],x['motif']),axis=1)
     pos_data = test_df[test_df['label']==1].copy()

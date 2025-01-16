@@ -41,7 +41,6 @@ if __name__ == '__main__':
     ksf_pred = predict(test_df)
     test_df['ksf_pred'] = ksf_pred
     test_df.dropna(axis=0,how='any',inplace=True)
-    print(test_df['label'].value_counts())
 
     roc_curve = Curve.get_roc_curves([y_true, y_true],
                                      [linkphinder_pred,ksf_pred],

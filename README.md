@@ -8,14 +8,13 @@ cd ksfinder-2.0 <br>
 conda env create -f env_config.yaml <br>
 conda activate ksf2 <br>
 
+Execute the following two commands, <br>
 python setup.py install <br>
 
-If you have GPU compatability error message, "UserWarning: CUDA initialization: The NVIDIA driver on your system is too old (found version 11060). Please update your GPU driver by downloading and installing a new version from the URL: http://www.nvidia.com/Download/index.aspx Alternatively, go to: https://pytorch.org to install a PyTorch version that has been compiled with your version of the CUDA driver." <br>
+Install pytorch package compatabile with your cuda-toolkit version. This project was developed using CUDA version: 11.6 which is compatible with the package, "pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.3 -c pytorch" <br>
+To install this version, use, conda install pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.3 -c pytorch <br>
 
-Install the below pytorch cudatoolkit package <br>
-conda install pytorch=1.10.2 cudatoolkit=11.3 torchvision torchaudio -c pytorch <br>
-
-3. Initialize the repository
+4. Initialize the repository <br>
 sh init.sh <br>
 Dataset and trained models are available in Zenodo repository, https://doi.org/10.5281/zenodo.14075070. Upon initialization, the models and dataset should be downloaded into appropriate folders in ksfinder-2.0 repository.
 
@@ -25,7 +24,7 @@ Dataset and trained models are available in Zenodo repository, https://doi.org/1
 sh assess.sh <br>
 
 # KSFinder 2.0 predictions
-We generated predictions for all combinations of kianses and substrate_motifs using KSFinder 2.0 and the predictions are available in the Zenodo repository, ksf2_predictions.zip. If you have run init.sh and set up local workspace as described earlier, then predictions are also available under output/batch folder. 
+We generated predictions for all combinations of kinases and substrate_motifs using KSFinder 2.0 and the predictions are available in the Zenodo repository, ksf2_predictions.zip. If you have run init.sh and set up local workspace as described earlier, then predictions are also available under output/batch folder. 
 
 # To get KSFinder 2.0 predictions for your data, pass the arguments --k, --sp, --sm as required. 
 --sp denotes the substrate protein, --sm denotes the phosphomotif (-/+ 4 mer),  --k denotes the kinase <br>

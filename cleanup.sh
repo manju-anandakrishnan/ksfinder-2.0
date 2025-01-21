@@ -32,3 +32,6 @@ rm *.csv
 cd ..
 rm *.csv
 
+cd $KSFINDER2_HOME_DIR/output/handler
+rm *.csv
+

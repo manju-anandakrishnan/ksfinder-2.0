@@ -42,16 +42,19 @@ if __name__ == '__main__':
     test_df = test_df[['head','tail','label','prob']].copy()
     test_df.drop_duplicates(inplace=True)
 
-    test_df = data_util.normalize_data_cnt(test_df)
-    print(test_df['label'].value_counts().to_dict())
+    test_df2 = test_df.copy()
 
-    y_true = test_df['label'].to_list()
-    ksf1_pred = test_df['prob'].to_list()
-    test_df.dropna(axis=0,how='any',inplace=True)
+    # Testing dataset 1
+    test_df1 = data_util.normalize_data_cnt(test_df)
+    print(test_df1['label'].value_counts().to_dict())
 
-    ksf2_pred = predict(test_df)
-    test_df['ksf_pred'] = ksf2_pred
-    test_df.dropna(axis=0,how='any',inplace=True)
+    y_true = test_df1['label'].to_list()
+    ksf1_pred = test_df1['prob'].to_list()
+    test_df1.dropna(axis=0,how='any',inplace=True)
+
+    ksf2_pred = predict(test_df1)
+    test_df1['ksf_pred'] = ksf2_pred
+    test_df1.dropna(axis=0,how='any',inplace=True)
 
     roc_curve = Curve.get_roc_curves([y_true, y_true],
                                         [ksf1_pred,ksf2_pred],
@@ -69,3 +72,31 @@ if __name__ == '__main__':
 
     roc_curve.savefig(constants.KSF2_KSF1_ROC_CURVES)
     pr_curve.savefig(constants.KSF2_KSF1_PR_CURVES)
+
+    # Testing dataset 2
+    print(test_df2['label'].value_counts().to_dict())
+
+    y_true = test_df2['label'].to_list()
+    ksf1_pred = test_df2['prob'].to_list()
+    test_df2.dropna(axis=0,how='any',inplace=True)
+
+    ksf2_pred = predict(test_df2)
+    test_df2['ksf_pred'] = ksf2_pred
+    test_df2.dropna(axis=0,how='any',inplace=True)
+
+    roc_curve = Curve.get_roc_curves([y_true, y_true],
+                                        [ksf1_pred,ksf2_pred],
+                                        ['blue','magenta'],)
+    pr_curve = Curve.get_pr_curves([y_true, y_true],[ksf1_pred,ksf2_pred],
+                                    ['blue','magenta'],)
+        
+    roc_score, _,_,_ = Score.get_roc_score(y_true,ksf2_pred)
+    pr_score, _,_,_ = Score.get_pr_score(y_true,ksf2_pred)
+    print(f'KSFinder 2.0:: ROC-AUC: {roc_score} | PR-AUC: {pr_score}')
+        
+    roc_score, _,_,_ = Score.get_roc_score(y_true,ksf1_pred)
+    pr_score, _,_,_ = Score.get_pr_score(y_true,ksf1_pred)
+    print(f'KSFinder:: ROC-AUC: {roc_score} | PR-AUC: {pr_score}')
+
+    roc_curve.savefig(constants.KSF2_KSF1_TD2_ROC_CURVES)
+    pr_curve.savefig(constants.KSF2_KSF1_TD2_PR_CURVES)

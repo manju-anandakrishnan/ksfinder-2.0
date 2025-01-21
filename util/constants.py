@@ -51,15 +51,6 @@ CSV_CLF_TRAIN_DATA_ASSESS3 = os.path.join(DIR_DATA_CLASSIFIER_ASSESS3,'clf_train
 CSV_CLF_TEST_D1_ASSESS3 = os.path.join(DIR_DATA_CLASSIFIER_ASSESS3,DIR_TD1,'clf_test_data.csv')
 CSV_CLF_TEST_D2_ASSESS3 = os.path.join(DIR_DATA_CLASSIFIER_ASSESS3,DIR_TD2,'clf_test_data.csv')
 
-DIR_DATA_DK_CLASSIFIER = os.path.join(DIR_DATA,'dk_classifier')
-CSV_CLF_TRAIN_DATA_DK = os.path.join(DIR_DATA_DK_CLASSIFIER,'dk','clf_train_data.csv')
-CSV_CLF_TEST_DATA_DK = os.path.join(DIR_DATA_DK_CLASSIFIER,'dk','clf_test_data.csv')
-CSV_CLF_TRAIN_DATA_GENERIC = os.path.join(DIR_DATA_DK_CLASSIFIER,'generic','clf_train_data.csv')
-CSV_CLF_TEST_DATA_GENERIC = os.path.join(DIR_DATA_DK_CLASSIFIER,'generic','clf_test_data.csv')
-
-GENERIC_MODEL_KSF2 = os.path.join(DIR_DATA_DK_CLASSIFIER,'generic_ksfinder2.pt')
-NON_TRL_DK_MODEL = os.path.join(DIR_DATA_DK_CLASSIFIER,'non_trl_dk.pt')
-
 DIR_CLASSIFIER = 'classifier'
 KSF2_ASSESS_ROC_CURVES = os.path.join(DIR_CLASSIFIER,'ksf2','roc_curve.png')
 KSF2_ASSESS_PR_CURVES = os.path.join(DIR_CLASSIFIER,'ksf2','pr_curve.png')
@@ -84,20 +75,30 @@ PHOS_ST_KINASES = os.path.join(DIR_ASSESSMENT4,'phosformer-ST','sup_file_x3_kina
 CSV_SER_THR_ATLAS = os.path.join(DIR_ASSESSMENT4,'phosformer-ST','SER_THR_atlas.csv')
 KSF2_PHOS_ST_ASSESS1_ROC_CURVES = os.path.join(DIR_ASSESSMENT4,'phosformer-ST','subassess1_roc_curve.png')
 KSF2_PHOS_ST_ASSESS1_PR_CURVES = os.path.join(DIR_ASSESSMENT4,'phosformer-ST','subassess1_pr_curve.png')
+KSF2_PHOS_ST_TD2_ASSESS1_ROC_CURVES = os.path.join(DIR_ASSESSMENT4,'phosformer-ST','td2','subassess1_roc_curve.png')
+KSF2_PHOS_ST_TD2_ASSESS1_PR_CURVES = os.path.join(DIR_ASSESSMENT4,'phosformer-ST','td2','subassess1_pr_curve.png')
 KSF2_PHOS_ST_ASSESS2_ROC_CURVES = os.path.join(DIR_ASSESSMENT4,'phosformer-ST','subassess2_roc_curve.png')
 KSF2_PHOS_ST_ASSESS2_PR_CURVES = os.path.join(DIR_ASSESSMENT4,'phosformer-ST','subassess2_pr_curve.png')
+KSF2_PHOS_ST_TD2_ASSESS2_ROC_CURVES = os.path.join(DIR_ASSESSMENT4,'phosformer-ST','td2','subassess2_roc_curve.png')
+KSF2_PHOS_ST_TD2_ASSESS2_PR_CURVES = os.path.join(DIR_ASSESSMENT4,'phosformer-ST','td2','subassess2_pr_curve.png')
 
 CSV_LINKPHINDER_PREDICTIONS = os.path.join(DIR_ASSESSMENT4,'link_phinder','linkphinder_predictions.csv')
 KSF2_LINKPHINDER_ROC_CURVES = os.path.join(DIR_ASSESSMENT4,'link_phinder','roc_curve.png')
 KSF2_LINKPHINDER_PR_CURVES = os.path.join(DIR_ASSESSMENT4,'link_phinder','pr_curve.png')
+KSF2_LINKPHINDER_TD2_ROC_CURVES = os.path.join(DIR_ASSESSMENT4,'link_phinder','td2','roc_curve.png')
+KSF2_LINKPHINDER_TD2_PR_CURVES = os.path.join(DIR_ASSESSMENT4,'link_phinder','td2','pr_curve.png')
 
 CSV_KSFINDER_PREDICTIONS = os.path.join(DIR_ASSESSMENT4,'ksfinder','ksfinder_predictions.csv')
 KSF2_KSF1_ROC_CURVES = os.path.join(DIR_ASSESSMENT4,'ksfinder','roc_curve.png')
 KSF2_KSF1_PR_CURVES = os.path.join(DIR_ASSESSMENT4,'ksfinder','pr_curve.png')
+KSF2_KSF1_TD2_ROC_CURVES = os.path.join(DIR_ASSESSMENT4,'ksfinder','td2','roc_curve.png')
+KSF2_KSF1_TD2_PR_CURVES = os.path.join(DIR_ASSESSMENT4,'ksfinder','td2','pr_curve.png')
 
 CSV_PREDKINKG_PREDICTIONS = os.path.join(DIR_ASSESSMENT4,'predkinkg','predkinkg_predictions.csv')
 KSF2_PREDKINKG_ROC_CURVES = os.path.join(DIR_ASSESSMENT4,'predkinkg','roc_curve.png')
 KSF2_PREDKINKG_PR_CURVES = os.path.join(DIR_ASSESSMENT4,'predkinkg','pr_curve.png')
+KSF2_PREDKINKG_TD2_ROC_CURVES = os.path.join(DIR_ASSESSMENT4,'predkinkg','td2','roc_curve.png')
+KSF2_PREDKINKG_TD2_PR_CURVES = os.path.join(DIR_ASSESSMENT4,'predkinkg','td2','pr_curve.png')
 
 CSV_KSF2_KG = os.path.join(DIR_DATA,'kg','kg_data.csv')
 CSV_KSF2_KG_TRAIN = os.path.join(DIR_DATA,'kg','kg_train_data.csv')

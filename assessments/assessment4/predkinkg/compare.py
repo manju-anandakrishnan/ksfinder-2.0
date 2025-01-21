@@ -42,13 +42,16 @@ if __name__ == '__main__':
     test_df.dropna(axis=0,how='any',inplace=True)    
     test_df.drop_duplicates(inplace=True)
 
-    test_df = data_util.normalize_data_cnt(test_df)
-    print(test_df['label'].value_counts().to_dict())
+    test_df2 = test_df.copy()
 
-    ksf2_pred = predict(test_df)
-    test_df['ksf_pred'] = ksf2_pred    
-    y_true = test_df['label'].to_list()
-    predkinkg_pred = test_df['proba'].to_list()
+    # Testing dataset 1
+    test_df1 = data_util.normalize_data_cnt(test_df)
+    print(test_df1['label'].value_counts().to_dict())
+
+    ksf2_pred = predict(test_df1)
+    test_df1['ksf_pred'] = ksf2_pred    
+    y_true = test_df1['label'].to_list()
+    predkinkg_pred = test_df1['proba'].to_list()
 
     roc_curve = Curve.get_roc_curves([y_true, y_true],
                                         [predkinkg_pred,ksf2_pred],
@@ -66,3 +69,28 @@ if __name__ == '__main__':
 
     roc_curve.savefig(constants.KSF2_PREDKINKG_ROC_CURVES)
     pr_curve.savefig(constants.KSF2_PREDKINKG_PR_CURVES)
+
+    # Testing dataset 2
+    print(test_df2['label'].value_counts().to_dict())
+
+    ksf2_pred = predict(test_df2)
+    test_df2['ksf_pred'] = ksf2_pred    
+    y_true = test_df2['label'].to_list()
+    predkinkg_pred = test_df2['proba'].to_list()
+
+    roc_curve = Curve.get_roc_curves([y_true, y_true],
+                                        [predkinkg_pred,ksf2_pred],
+                                        ['blue','magenta'],)
+    pr_curve = Curve.get_pr_curves([y_true, y_true],[predkinkg_pred,ksf2_pred],
+                                    ['blue','magenta'],)
+        
+    roc_score, _,_,_ = Score.get_roc_score(y_true,ksf2_pred)
+    pr_score, _,_,_ = Score.get_pr_score(y_true,ksf2_pred)
+    print(f'KSFinder 2.0:: ROC-AUC: {roc_score} | PR-AUC: {pr_score}')
+        
+    roc_score, _,_,_ = Score.get_roc_score(y_true,predkinkg_pred)
+    pr_score, _,_,_ = Score.get_pr_score(y_true,predkinkg_pred)
+    print(f'PredKinKG:: ROC-AUC: {roc_score} | PR-AUC: {pr_score}')
+
+    roc_curve.savefig(constants.KSF2_PREDKINKG_TD2_ROC_CURVES)
+    pr_curve.savefig(constants.KSF2_PREDKINKG_TD2_PR_CURVES)

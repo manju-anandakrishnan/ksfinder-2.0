@@ -64,6 +64,11 @@ if __name__ == '__main__':
             result_df.to_csv(os.path.join(output_dir,file_name),index=False,sep='|')
             print(os.path.join(output_dir,file_name))
     else:
+        for i, result_df in _process_data(kinase,substrate,motif):
+            file_name = f'pred_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv'
+            result_df.to_csv(os.path.join(output_dir,file_name),index=False,sep='|')
+            print(os.path.join(output_dir,file_name))
+        print('Completed***********')
         print('''Either kinase or substrate or motif information is required. 
               Pass argument --k, --sp, --sm for kinase, susbtrate protein and motif respectively.
                If you need all prediction, download from KSFinder 2.0 repository.''')

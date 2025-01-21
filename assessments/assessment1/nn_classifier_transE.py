@@ -41,7 +41,7 @@ class KSFinder2:
         self.m_emb_train = torch.tensor(m_emb_train,dtype=torch.float32)
         self.y_train = torch.tensor(y_train,dtype=torch.float32).view(-1,1)
 
-     """
+    """
     Model training
     
     Returns

@@ -109,18 +109,17 @@ class KSFinder2:
                             pr_score = round(average_precision_score(y_fold_test, y_pred),6)
                         
                         # Check for early stopping
-                        if (epoch+1)%5 == 0:
-                            if pr_score > best_score:
-                                best_score = pr_score
-                                model_fold_scores[fold]=best_score
-                                model_fold_epochs[fold]=epoch
-                                patience_count = 0
-                            else:
-                                patience_count += 1
-                                if patience_count == 3:
-                                    model_fold_epochs[fold]=epoch-3*5
-                                    print(f"\tEarly stopping triggered at {epoch} epoch. ROC-AUC:{roc_score};PR-AUC:{pr_score}")
-                                    break  
+                        if pr_score > best_score:
+                            best_score = pr_score
+                            model_fold_scores[fold]=best_score
+                            model_fold_epochs[fold]=epoch
+                            patience_count = 0
+                        else:
+                            patience_count += 1
+                            if patience_count == 3:
+                                model_fold_epochs[fold]=epoch-3
+                                print(f"\tEarly stopping triggered at {epoch} epoch. ROC-AUC:{roc_score};PR-AUC:{pr_score}")
+                                break  
                 except ValueError as ve:
                     print(ve.with_traceback())                
             max_score = np.max(model_fold_scores)
@@ -141,7 +140,7 @@ class KSFinder2:
         s_emb_train = self.s_emb_train.to(device)
         m_emb_train = self.m_emb_train.to(device)
         y_train = self.y_train.to(device)
-        for _ in range(best_model_params.get('epoch')):
+        for iter_cnt in range(best_model_params.get('epoch')):
             outputs = model(k_emb_train, k_emb_train, s_emb_train, m_emb_train)
             loss = criterion(outputs, y_train)
             optimizer.zero_grad()
@@ -182,19 +181,5 @@ if __name__ == '__main__':
     testing_data = ksm_embeddings.get_testing_data(raw_testing_data)
     model = torch.jit.load(model_path)
     
-    roc_score, pr_score = evaluate_model(model,testing_data)
-    print("ROC Score:", roc_score, "PR Score:",pr_score)
-
-    raw_testing_data = data_loader.get_testing_data(constants.CSV_CLF_TEST_DATA_DK)
-    # Equalize count of positive and negative labels
-    raw_testing_data = data_util.normalize_data_cnt(raw_testing_data)
-    testing_data = ksm_embeddings.get_testing_data(raw_testing_data)
-        
-    roc_score, pr_score = evaluate_model(model,testing_data)
-    print("ROC Score:", roc_score, "PR Score:",pr_score)
-
-    raw_testing_data = data_loader.get_testing_data(constants.CSV_CLF_TEST_DATA_DK)
-    testing_data = ksm_embeddings.get_testing_data(raw_testing_data)
-        
     roc_score, pr_score = evaluate_model(model,testing_data)
     print("ROC Score:", roc_score, "PR Score:",pr_score)

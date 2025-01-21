@@ -27,7 +27,7 @@ class Curve:
         plt.plot([0, 1, 1], [1, 1, 0], linestyle=':', color='green', label='Perfect classifier')
         plt.xlabel('recall')
         plt.ylabel('precision')
-        plt.legend(loc="center left")
+        plt.legend(loc="lower left")
         return fig
     
     # Use it when plotting multiple curves. Inputs - y_labels, y_probs, curve_colors are lists of list
@@ -60,7 +60,7 @@ class Curve:
         plt.plot([0, 1, 1], [1, 1, 0], linestyle=':', color='green', label='Perfect classifier')
         plt.xlabel('recall')
         plt.ylabel('precision')
-        plt.legend(loc="center left")
+        plt.legend(loc=(0.3, 0.1))
         return fig
 
     

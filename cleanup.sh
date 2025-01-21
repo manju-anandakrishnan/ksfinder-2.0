@@ -18,6 +18,7 @@ rm link_phinder/linkphinder_predictions.csv
 rm phosformer-ST/phosformer_predictions.csv
 rm phosformer-ST/SER_THR_atlas.csv
 rm predkinkg/predkinkg_predictions.csv
+rm license
 find . -type f -name "*.png" -exec rm -f {} \;
 
 cd $KSFINDER2_HOME_DIR/output

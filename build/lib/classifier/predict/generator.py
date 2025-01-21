@@ -5,6 +5,7 @@ from util import constants
 
 ksf2 = torch.jit.load(constants.MODEL_KSF2)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(device)
 
 def _preprocess(df):
     df['substrate1'] = df['tail'].apply(lambda x:x[:x.index('_')])

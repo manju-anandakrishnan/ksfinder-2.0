@@ -71,3 +71,5 @@ python assessments/assessment4/ksfinder/compare.py
 
 echo 'Comparing KSFinder 2.0 and predkinkg'
 python assessments/assessment4/predkinkg/compare.py
+
+echo '-----------------Assessment4 Ended---------------------'
